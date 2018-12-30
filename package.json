@@ -1,0 +1,41 @@
+{
+	"name": "mayacode",
+	"displayName": "MayaCode",
+	"description": "A Visual Studio Code extension with support for coding for Maya.",
+	"version": "0.0.1",
+	"publisher": "saviof",
+	"engines": {
+		"vscode": "^1.0.0"
+	},
+	"keywords": [
+		"maya",
+		"mel"
+	],
+	"categories": [
+		"Programming Languages",
+		"Snippets",
+		"Other"
+	],
+	"activationEvents": [
+		"onLanguage:mel",
+		"onLanguage:python"
+	],
+	"contributes": {
+		"languages": [
+			{
+				"id": "mel",
+				"aliases": [
+					"Maya MEL",
+					"MEL",
+					"Mel",
+					"mel"
+				],
+				"extensions": [
+					".mel",
+					".ma"
+				],
+				"configuration": "./language-configuration.json"
+			}
+		]
+	}
+}
