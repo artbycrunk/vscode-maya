@@ -57,6 +57,12 @@
 				"path": "./syntaxes/mel.tmLanguage.json"
 			}
 		],
+		"snippets": [
+			{
+				"language": "mel",
+				"path": "./snippets/mel.json"
+			}
+		],
 		]
 	}
 }

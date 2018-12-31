@@ -1,0 +1,79 @@
+{
+	"if": {
+		"prefix": "if",
+		"body": ["if (${1:expression})", "{", "\t${2:statement};", "}"],
+		"description": "Code snippet for an if statement"
+	},
+	"if/else": {
+		"prefix": "if/else",
+		"body": ["if (${1:expression})", "{", "\t${2:statement};", "}else:", "\t${3:statement};", "}"],
+		"description": "Code snippet for an if statement with else"
+	},
+	"elseif": {
+		"prefix": "elseif",
+		"body": ["else if (${1:expression})", "{", "\t${2:statement};", "}"],
+		"description": "Code snippet for an else if"
+	},
+	"else": {
+		"prefix": "else",
+		"body": ["else{", "\t${1:statement};", "}"],
+		"description": "Code snippet for an else"
+	},
+	"do/while": {
+		"prefix": "do/while",
+		"body": ["do {", "\t${1:statement};", "}", "while(${2:expression})"],
+		"description": "Code snippet for a do while loop"
+	},
+	"switch/case": {
+		"prefix": "switch/case",
+		"body": [
+			"switch (${1:expression})",
+			"{",
+			"\tcase ${2:value1}:",
+			"\t\t${3:expression};",
+			"\t\tbreak;",
+			"\tcase ${4:value1}:",
+			"\t\t${5:expression};",
+			"\t\tbreak;",
+			"}"
+		],
+		"description": "Code snippet for a switch case"
+	},
+	"proc": {
+		"prefix": "proc",
+		"body": [
+			"proc ${1:return_type} ${2:procname}(${3:arg_list})",
+			"{",
+			"\t${4:statement};",
+			"\treturn ${5:return};",
+			"}"
+		],
+		"description": "Code snippet for a procedure"
+	},
+	"proc(global)": {
+		"prefix": "proc(global)",
+		"body": [
+			"global proc ${1:return_type} ${2:procname}(${3:arg_list})",
+			"{",
+			"\t${4:statement};",
+			"\treturn ${5:return};",
+			"}"
+		],
+		"description": "Code snippet for a global procedure"
+	},
+	"for/in": {
+		"prefix": "for/in",
+		"body": ["for (${1:var} in ${2:array})", "{", "\t${4:statement};", "}"],
+		"description": "Code snippet for a for loop"
+	},
+	"for": {
+		"prefix": "for",
+		"body": ["for (${1:var}=0; ${1:var}<(size(${2:array})-1); ${1:var}++)", "{", "\t${4:statement};", "}"],
+		"description": "Code snippet for a for loop with counter"
+	},
+	"while": {
+		"prefix": "while",
+		"body": ["while (${1:condition})", "{", "\t${2:statement};", "}"],
+		"description": "Code snippet for a for while loop"
+	}
+}
