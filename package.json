@@ -4,6 +4,19 @@
 	"description": "A Visual Studio Code extension with support for coding for Maya.",
 	"version": "0.0.1",
 	"publisher": "saviof",
+	"author": {
+		"name": "Savio Fernandes"
+	},
+	"license": "MIT",
+	"homepage": "https://github.com/artbycrunk/vscode-maya",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/artbycrunk/vscode-maya"
+	},
+	"bugs": {
+		"url": "https://github.com/artbycrunk/vscode-maya/issues"
+	},
+	"icon": "icon.png",
 	"engines": {
 		"vscode": "^1.0.0"
 	},
