@@ -49,6 +49,14 @@
 				],
 				"configuration": "./language-configuration.json"
 			}
+		],
+		"grammars": [
+			{
+				"language": "mel",
+				"scopeName": "source.mel",
+				"path": "./syntaxes/mel.tmLanguage.json"
+			}
+		],
 		]
 	}
 }
