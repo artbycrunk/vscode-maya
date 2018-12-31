@@ -2,6 +2,30 @@
 
 A [Visual Studio Code](https://code.visualstudio.com/) [extension](https://marketplace.visualstudio.com/VSCode) with support for coding for Maya.
 
+## Useful commands
+
+Open the Command Palette (Command+Shift+P on macOS and Ctrl+Shift+P on Windows/Linux) and type in one of the following commands:
+
+Command | Description
+--- | ---
+```Maya: Send Python Code to Maya``` | Send Python code from current editor in Maya.
+```Maya: Send MEL Code to Maya``` | Send MEL code from current editor in Maya.
+
+## Opening the correct ports for Send to Maya Commands.
+
+To open the correct ports in maya, you can use the following code.
+
+In the Maya script editor Python Tab.
+```
+import maya.cmds as commands
+cmds.commandPort(name=":7002", sourceType="python", echoOutput=True)
+```
+
+In the Maya script editor MEL Tab.
+```
+commandPort -name "localhost:7001" -sourceType "mel" -echoOutput;
+```
+
 ## Snippets
 
 |Prefixes|Description|
@@ -17,6 +41,10 @@ A [Visual Studio Code](https://code.visualstudio.com/) [extension](https://marke
 |for/in|Code snippet for a for loop|
 |for|Code snippet for a for loop with counter|
 |while|Code snippet for a for while loop|
+
+## Requirements
+
+Autodesk Maya tested using Maya 2016 Windows and Linux but should work with all versions.
 
 ## Issues, feature requests, and contributions
 

@@ -31,8 +31,23 @@
 	],
 	"activationEvents": [
 		"onLanguage:mel",
-		"onLanguage:python"
+		"onLanguage:python",
+		"onCommand:mayacode.sendPythonToMaya",
+		"onCommand:mayacode.sendMelToMaya"
 	],
+	"main": "./out/extension.js",
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install"
+	},
+	"devDependencies": {
+		"@types/node": "^6.0.40",
+		"tslint": "^5.11.0",
+		"typescript": "^2.1.4",
+		"vscode": "^1.1.17"
+	},
 	"contributes": {
 		"languages": [
 			{
@@ -63,6 +78,76 @@
 				"path": "./snippets/mel.json"
 			}
 		],
-		]
+		"commands": [
+			{
+				"command": "mayacode.sendPythonToMaya",
+				"title": "Send Python Code to Maya",
+				"category": "Maya"
+			},
+			{
+				"command": "mayacode.sendMelToMaya",
+				"title": "Send MEL Code to Maya",
+				"category": "Maya"
+			}
+		],
+		"configuration": {
+			"type": "object",
+			"title": "Maya port configuration",
+			"properties": {
+				"mayacode.mel.port": {
+					"type": "integer",
+					"default": 7001,
+					"description": "The port over which to send mel commands."
+				},
+				"mayacode.python.port": {
+					"type": "integer",
+					"default": 7002,
+					"description": "The port over which to send python commands."
+				},
+				"mayacode.hostname": {
+					"type": "string",
+					"default": "localhost",
+					"description": "The hostname of the machine which has a maya instance running."
+				}
+			}
+		},
+		"keybindings": [
+			{
+				"command": "mayacode.sendPythonToMaya",
+				"key": "alt+shift+m",
+				"mac": "ctrl+shift+m",
+				"when": "editorTextFocus && editorLangId == 'python'"
+			},
+			{
+				"command": "mayacode.sendMelToMaya",
+				"key": "alt+shift+m",
+				"mac": "ctrl+shift+m",
+				"when": "editorTextFocus && editorLangId == 'mel'"
+			}
+		],
+		"menus": {
+			"editor/context": [
+				{
+					"command": "mayacode.sendPythonToMaya",
+					"when": "editorTextFocus && editorLangId == 'python'",
+					"group": "navigation"
+				},
+				{
+					"command": "mayacode.sendMelToMaya",
+					"when": "editorTextFocus && editorLangId == 'mel'",
+					"group": "navigation"
+				}
+			],
+			"explorer/context": [
+				{
+					"command": "mayacode.sendPythonToMaya",
+					"group": "mayacode"
+				},
+				{
+					"command": "mayacode.sendMelToMaya",
+					"group": "mayacode"
+				}
+			]
+		}
 	}
 }
