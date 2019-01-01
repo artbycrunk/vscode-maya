@@ -11,6 +11,10 @@ Command | Description
 ```Maya: Send Python Code to Maya``` | Send Python code from current editor in Maya.
 ```Maya: Send MEL Code to Maya``` | Send MEL code from current editor in Maya.
 
+You can also select a block of code in the editor 
+and ```Right-click -> Send Code to Maya```, this is based on the current working language (Mel or Python).
+
+
 ## Opening the correct ports for Send to Maya Commands.
 
 To open the correct ports in maya, you can use the following code.
