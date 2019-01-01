@@ -1,6 +1,7 @@
 'use strict';
 
 import * as vscode from 'vscode';
+import * as data from './completions.json';
 
 import { Socket } from 'net';
 var net = require('net');
@@ -79,6 +80,10 @@ export class Logger {
 export function activate(context: vscode.ExtensionContext) {
 	let outputPanel = vscode.window.createOutputChannel('Maya');
 	Logger.registerOutputPanel(outputPanel);
+
+	let words: Array<string> = [];
+	let completions: Array<vscode.CompletionItem> = [];
+	let word_completions: Array<vscode.CompletionItem> = [];
 
 	var config = vscode.workspace.getConfiguration('mayacode');
 
@@ -166,6 +171,43 @@ export function activate(context: vscode.ExtensionContext) {
 			})
 		];
 	}
+
+	const provider = vscode.languages.registerCompletionItemProvider(
+		'mel',
+		{
+			provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
+				if (completions.length == 0) {
+					Logger.info(`Building completions`);
+
+					data['completions'].forEach(this_item => {
+						words.push(this_item['trigger']);
+						let item = new vscode.CompletionItem(this_item['trigger'], vscode.CompletionItemKind.Function);
+						item.detail = this_item['trigger'];
+						item.documentation = this_item['comment'];
+						completions.push(item);
+					});
+				}
+
+				for (let i = 0; i < document.lineCount; ++i) {
+					const line = document.lineAt(i);
+					const text = line.text;
+					const _words = text.split(/ |\(|\)|;|\"/);
+					_words.forEach(word => {
+						word = word.trim();
+						if (words.indexOf(word) == -1) {
+							words.push(word);
+							word_completions.push(new vscode.CompletionItem(word, vscode.CompletionItemKind.Text));
+						}
+					});
+				}
+
+				return [...word_completions, ...completions];
+			}
+		},
+		'.' // triggered whenever a '.' is being typed
+	);
+
+	context.subscriptions.push(provider);
 
 	const command_mel = vscode.commands.registerCommand('mayacode.sendMelToMaya', function() {
 		socket_mel = ensureConnection('mel');

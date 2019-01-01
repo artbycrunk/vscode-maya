@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.0.4
+* Added support for autocompletion of MEL commands
+
 ## Version 0.0.3
 * Added status bar indication when maya port is connected.
 * Added context option, to select code and right-click, ```Send to Maya```

@@ -2,6 +2,14 @@
 
 A [Visual Studio Code](https://code.visualstudio.com/) [extension](https://marketplace.visualstudio.com/VSCode) with support for coding for Maya.
 
+
+## Features
+
+* Autocomplete MEL commands as you type ( along with flag info )
+* Send code to Maya via command port (MEL or Python).
+* Syntax Highlight MEL scripts.
+* Support auto closing brackets, quotes and ticks
+
 ## Useful commands
 
 Open the Command Palette (Command+Shift+P on macOS and Ctrl+Shift+P on Windows/Linux) and type in one of the following commands:
