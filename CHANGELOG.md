@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.0.6
+* Updated Readme with gifs for demo.
+
 ## Version 0.0.5
 * Bugfix for completions not found.
 
