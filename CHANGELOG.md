@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.0.5
+* Bugfix for completions not found.
+
 ## Version 0.0.4
 * Added support for autocompletion of MEL commands
 

@@ -68,8 +68,6 @@ Autodesk Maya tested using Maya 2016 Windows and Linux but should work with all 
 
 ## Release Notes
 
-### 1.0.0
-
-Initial release of vscode-maya
+See [CHANGELOG.md](./CHANGELOG.md)
 
 **Enjoy!**
