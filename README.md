@@ -6,9 +6,17 @@ A [Visual Studio Code](https://code.visualstudio.com/) [extension](https://marke
 ## Features
 
 * Autocomplete MEL commands as you type ( along with flag info )
+
+  > ![Autocomplete MEL commands as you type](./images/autocomplete.gif "Autocomplete MEL commands as you type")
+
 * Send code to Maya via command port (MEL or Python).
+
+  > ![Send code to Maya via command port](./images/send_to_maya.gif "Send code to Maya via command port")
+
 * Syntax Highlight MEL scripts.
 * Support auto closing brackets, quotes and ticks
+
+  > ![Syntax Highlight MEL scripts](./images/syntax_highlight.gif "Syntax Highlight MEL scripts.")
 
 ## Useful commands
 
