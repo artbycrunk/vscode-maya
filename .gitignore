@@ -2,3 +2,6 @@ node_modules
 *.vsix
 TODO
 scrap
+out
+
+

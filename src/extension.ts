@@ -4,6 +4,10 @@ import * as vscode from 'vscode';
 import * as data from './completions.json';
 
 import { Socket } from 'net';
+import * as os from 'os';
+import * as fs from 'fs';
+import * as path from 'path';
+
 var net = require('net');
 
 let mayaportStatusBar: vscode.StatusBarItem;
@@ -149,7 +153,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 		if (selection.isEmpty != true) {
 			Logger.info(`Sending selected ${type} code to maya`);
-			text = editor.document.getText(selection);
+			text = '{' + editor.document.getText(selection) + '}';
 		} else {
 			Logger.info(`Sending all ${type} code to maya`);
 			text = editor.document.getText();
@@ -181,7 +185,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 					data['completions'].forEach(this_item => {
 						words.push(this_item['trigger']);
-						let item = new vscode.CompletionItem(this_item['trigger'], vscode.CompletionItemKind.Function);
+						let item = new vscode.CompletionItem(this_item['trigger']);
 						item.detail = this_item['trigger'];
 						item.documentation = this_item['comment'];
 						completions.push(item);
@@ -196,7 +200,7 @@ export function activate(context: vscode.ExtensionContext) {
 						word = word.trim();
 						if (words.indexOf(word) == -1) {
 							words.push(word);
-							word_completions.push(new vscode.CompletionItem(word, vscode.CompletionItemKind.Text));
+							word_completions.push(new vscode.CompletionItem(word));
 						}
 					});
 				}
@@ -212,7 +216,19 @@ export function activate(context: vscode.ExtensionContext) {
 	const command_mel = vscode.commands.registerCommand('mayacode.sendMelToMaya', function() {
 		socket_mel = ensureConnection('mel');
 		let text = getText('mel');
-		send(text, 'mel');
+
+		let nativePath = path.join(os.tmpdir(), "MayaCode.mel");
+		let posixPath = nativePath.replace(/\\/g, "/");
+		Logger.info(`Writing text to ${posixPath}...`);
+		fs.writeFile(nativePath, text, function(err) {
+			if (err) {
+				vscode.window.showErrorMessage(`Failed to write MEL to temp file ${posixPath}`);
+			} else {
+				const cmd = `source \"${posixPath}\";`
+				Logger.info(`Executing ${cmd}...`);
+				send(cmd, "mel");
+			}
+		});
 	});
 
 	context.subscriptions.push(command_mel);
