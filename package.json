@@ -2,7 +2,7 @@
 	"name": "mayacode",
 	"displayName": "MayaCode",
 	"description": "A Visual Studio Code extension with support for coding for Maya.",
-	"version": "0.0.6",
+	"version": "0.0.7",
 	"publisher": "saviof",
 	"author": {
 		"name": "Savio Fernandes"

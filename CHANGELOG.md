@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.0.7
+* Fix lookup regex for faster autocompletion.
+
 ## Version 0.0.6
 * Updated Readme with gifs for demo.
 
