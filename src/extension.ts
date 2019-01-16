@@ -172,40 +172,36 @@ export function activate(context: vscode.ExtensionContext) {
 		];
 	}
 
-	const provider = vscode.languages.registerCompletionItemProvider(
-		'mel',
-		{
-			provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
-				if (completions.length == 0) {
-					Logger.info(`Building completions`);
+	const provider = vscode.languages.registerCompletionItemProvider('mel', {
+		provideCompletionItems(document: vscode.TextDocument, position: vscode.Position, token, context) {
+			if (completions.length == 0) {
+				Logger.info(`Building completions`);
 
-					data['completions'].forEach(this_item => {
-						words.push(this_item['trigger']);
-						let item = new vscode.CompletionItem(this_item['trigger'], vscode.CompletionItemKind.Function);
-						item.detail = this_item['trigger'];
-						item.documentation = this_item['comment'];
-						completions.push(item);
-					});
-				}
-
-				for (let i = 0; i < document.lineCount; ++i) {
-					const line = document.lineAt(i);
-					const text = line.text;
-					const _words = text.split(/ |\(|\)|;|\"/);
-					_words.forEach(word => {
-						word = word.trim();
-						if (words.indexOf(word) == -1) {
-							words.push(word);
-							word_completions.push(new vscode.CompletionItem(word, vscode.CompletionItemKind.Text));
-						}
-					});
-				}
-
-				return [...word_completions, ...completions];
+				data['completions'].forEach(this_item => {
+					words.push(this_item['trigger']);
+					let item = new vscode.CompletionItem(this_item['trigger'], vscode.CompletionItemKind.Function);
+					item.detail = this_item['trigger'];
+					item.documentation = this_item['comment'];
+					completions.push(item);
+				});
 			}
-		},
-		'.' // triggered whenever a '.' is being typed
-	);
+
+			for (let i = 0; i < document.lineCount; ++i) {
+				const line = document.lineAt(i);
+				const text = line.text;
+				const _words = text.split(/[^A-Za-z]+/);
+				_words.forEach(word => {
+					word = word.trim();
+					if (words.indexOf(word) == -1) {
+						words.push(word);
+						word_completions.push(new vscode.CompletionItem(word, vscode.CompletionItemKind.Text));
+					}
+				});
+			}
+
+			return [...word_completions, ...completions];
+		}
+	});
 
 	context.subscriptions.push(provider);
 
