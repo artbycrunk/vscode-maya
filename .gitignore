@@ -2,3 +2,7 @@ node_modules
 *.vsix
 TODO
 scrap
+
+.mypy_cache
+*.js
+*.js.map

@@ -6,3 +6,4 @@ vsc-extension-quickstart.md
 **/tsconfig.json
 !file.ts
 scrap
+python/maya/.mypy_cache
