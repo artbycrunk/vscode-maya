@@ -2,6 +2,7 @@
 
 A [Visual Studio Code](https://code.visualstudio.com/) [extension](https://marketplace.visualstudio.com/VSCode) with support for coding for Maya.
 
+**Current Version** : 1.0.0
 
 ## Features
 
@@ -35,11 +36,7 @@ and ```Right-click -> Send Code to Maya```, this is based on the current working
 
 To open the correct ports in maya, you can use the following code.
 
-In the Maya script editor Python Tab.
-```
-import maya.cmds as commands
-cmds.commandPort(name=":7002", sourceType="python", echoOutput=True)
-```
+`Note: If your using a extension version higher than 0.9, then MEL and Python code use the same port in maya.`
 
 In the Maya script editor MEL Tab.
 ```

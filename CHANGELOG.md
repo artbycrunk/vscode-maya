@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 1.0.0
+* Rewrite the code to work over a single Maya socket.
+* Use temp files to send code between vscode and maya.
+* Add support for sending complete files to maya
+  thanks @Ziriax or the pull request.
+
 ## Version 0.0.7
 * Fix lookup regex for faster autocompletion.
 
