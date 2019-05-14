@@ -54,8 +54,9 @@ export class Logger {
 		this.typeLog(log, 'INFO');
 	}
 
-	public static error(log: String) {
+	public static error(log: string) {
 		this.typeLog(log, 'ERROR');
+		vscode.window.showErrorMessage(log);
 	}
 
 	public static success(log: String) {
