@@ -4,25 +4,21 @@ import * as vscode from 'vscode';
 import * as data from './completions.json';
 
 import { Socket } from 'net';
+import * as os from 'os';
+import * as fs from 'fs';
+import * as path from 'path';
+
 var net = require('net');
 
 let mayaportStatusBar: vscode.StatusBarItem;
 let socket_mel: Socket;
-let socket_py: Socket;
 let port_mel: string;
-let port_py: string;
 
 function updateStatusBarItem(langID?: string): void {
 	let text: string;
-	if (langID == 'python') {
-		if (socket_py instanceof Socket == true) {
-			text = `Maya Python : ${port_py}`;
-			mayaportStatusBar.text = text;
-			mayaportStatusBar.show();
-		}
-	} else if (langID == 'mel') {
-		if (socket_mel instanceof Socket == true) {
-			text = `Maya Mel : ${port_mel}`;
+	if (langID == 'python' || langID == 'mel') {
+		if (socket_mel instanceof Socket == true && socket_mel.destroyed == false) {
+			text = `Maya Port : ${port_mel}`;
 			mayaportStatusBar.text = text;
 			mayaportStatusBar.show();
 		}
@@ -50,7 +46,7 @@ export class Logger {
 		this._outputPanel = outputPanel;
 	}
 
-	public static info(log: String) {
+	public static info(log: string) {
 		this.typeLog(log, 'INFO');
 	}
 
@@ -91,18 +87,12 @@ export function activate(context: vscode.ExtensionContext) {
 	function ensureConnection(type: string) {
 		let socket;
 		let mayahost: string = config.get('hostname');
-		let port: string = config.get(type + '.port');
+		let port: string = config.get('mel.port');
 
-		if (type == 'mel') {
-			socket = socket_mel;
-			port_mel = port;
-		}
-		if (type == 'python') {
-			socket = socket_py;
-			port_py = port;
-		}
+		socket = socket_mel;
+		port_mel = port;
 
-		if (socket instanceof Socket == true) {
+		if (socket instanceof Socket == true && socket.destroyed == false) {
 			Logger.info(`Already active : Port ${port} on Host ${mayahost} for ${type}`);
 			updateStatusBarItem(type);
 		} else {
@@ -115,7 +105,6 @@ export function activate(context: vscode.ExtensionContext) {
 					error.code
 				}`;
 				Logger.error(errorMsg);
-				vscode.window.showErrorMessage(errorMsg);
 			});
 
 			socket.on('data', function(data) {
@@ -130,17 +119,40 @@ export function activate(context: vscode.ExtensionContext) {
 		return socket;
 	}
 
+	function send_tmp_file(text: string, type: string) {
+		let cmd:string, nativePath:string, posixPath:string;
+
+		if (type == 'python') {
+			nativePath = path.join(os.tmpdir(), "MayaCode.py");
+			posixPath = nativePath.replace(/\\/g, "/");
+			cmd = `python("execfile('${posixPath}')")`;
+		}
+
+		if (type == 'mel') {
+			nativePath = path.join(os.tmpdir(), "MayaCode.mel");
+			posixPath = nativePath.replace(/\\/g, "/");
+			cmd = `source \"${posixPath}\";`;
+		}
+
+		Logger.info(`Writing text to ${posixPath}...`);
+		fs.writeFile(nativePath, text, function (err) {
+			if (err) {
+				Logger.error(`Failed to write ${type} to temp file ${posixPath}`);
+			} else {
+				Logger.info(`Executing ${cmd}...`);
+				send(cmd, type);
+			}
+		});
+	}
+
 	function send(text: string, type: string) {
-		let socket: Socket;
-		if (type == 'mel') socket = socket_mel;
-		if (type == 'python') socket = socket_py;
-
-		socket.write(text);
-		socket.write('\n');
-
-		let successMsg = `Sent ${type} code to Maya`;
-		Logger.info(successMsg);
-		vscode.window.setStatusBarMessage(successMsg);
+		let success: boolean = socket_mel.write(text + '\n');
+		Logger.info(text);
+		if (success){
+			let successMsg = `Sent ${type} code to Maya...`;
+			Logger.info(successMsg);
+			vscode.window.setStatusBarMessage(successMsg);
+		}
 	}
 
 	function getText(type: string) {
@@ -208,16 +220,20 @@ export function activate(context: vscode.ExtensionContext) {
 
 	const command_mel = vscode.commands.registerCommand('mayacode.sendMelToMaya', function() {
 		socket_mel = ensureConnection('mel');
-		let text = getText('mel');
-		send(text, 'mel');
+		if (!socket_mel.destroyed) {
+			let text = getText('mel');
+			send_tmp_file(text, 'mel');
+		}
 	});
 
 	context.subscriptions.push(command_mel);
 
 	const command_py = vscode.commands.registerCommand('mayacode.sendPythonToMaya', function() {
-		socket_py = ensureConnection('python');
-		let text = getText('python');
-		send(text, 'python');
+		socket_mel = ensureConnection('python');
+		if (!socket_mel.destroyed) {
+			let text = getText('python');
+			send_tmp_file(text, 'python');
+		}
 	});
 
 	context.subscriptions.push(command_py);
