@@ -1,9 +1,11 @@
 .vscode/**
 .vscode-test/**
 .gitignore
+.history
 vsc-extension-quickstart.md
 **/*.ts
 **/tsconfig.json
 !file.ts
 scrap
+python
 python/maya/.mypy_cache

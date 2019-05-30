@@ -6,3 +6,5 @@ scrap
 .mypy_cache
 *.js
 *.js.map
+
+.history
