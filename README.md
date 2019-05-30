@@ -69,14 +69,16 @@ Autodesk Maya tested using Maya 2016 Windows and Linux but should work with all 
 
 ## Issues, feature requests, and contributions
 
-* If you come across a problem with the extension, please [file an issue](https://github.com/artbycrunk/vscode-maya)
+* If you come across a problem with the extension, please [file an issue](https://github.com/artbycrunk/vscode-maya/issues)
 * Contributions are always welcome!
 * Any and all feedback is appreciated and welcome!
-  - If someone has already [filed an issue](https://github.com/artbycrunk/vscode-maya) that encompasses your feedback, please leave a 👍/👎 reaction on the issue
+  - If someone has already [filed an issue](https://github.com/artbycrunk/vscode-maya/issues) that encompasses your feedback, please leave a 👍/👎 reaction on the issue
   - Otherwise please file a new issue
 
 ## Release Notes
 
 See [CHANGELOG.md](./CHANGELOG.md)
+
+See [Recent Releases](https://github.com/artbycrunk/vscode-maya/releases)
 
 **Enjoy!**
