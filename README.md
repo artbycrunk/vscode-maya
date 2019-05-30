@@ -1,8 +1,12 @@
 # Maya Extension for Visual Studio Code
 
-A [Visual Studio Code](https://code.visualstudio.com/) [extension](https://marketplace.visualstudio.com/VSCode) with support for coding for Maya.
+[![Visual Studio Marketplace](https://img.shields.io/vscode-marketplace/v/saviof.mayacode.svg?style=flat&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=saviof.mayacode)
+[![Visual Studio Marketplace](https://img.shields.io/vscode-marketplace/r/saviof.mayacode.svg?style=flat&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=saviof.mayacode)
+[![](https://img.shields.io/badge/TWITTER-%40artbycrunk-blue.svg?logo=twitter&style=flat)](https://twitter.com/artbycrunk)
+[![](https://img.shields.io/badge/gitter-join_chat-1dce73.svg?style=flat&logo=gitter-white)](https://gitter.im/vscode-maya/vscode-maya)
 
-**Current Version** : 1.0.0
+
+A [Visual Studio Code](https://code.visualstudio.com/) [extension](https://marketplace.visualstudio.com/items?itemName=saviof.mayacode) with support for coding for Maya.
 
 ## Features
 
