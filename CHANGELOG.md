@@ -1,10 +1,13 @@
 # Changelog
 
+## Version 1.0.1
+* Fixed issue with non-ascii characters in python code [issues/5](https://github.com/artbycrunk/vscode-maya/issues/5)
+
 ## Version 1.0.0
 * Rewrite the code to work over a single Maya socket.
 * Use temp files to send code between vscode and maya.
 * Add support for sending complete files to maya
-  thanks @Ziriax or the pull request.
+  thanks @Ziriax or the pull request. [pull/1](https://github.com/artbycrunk/vscode-maya/pull/1)
 
 ## Version 0.0.7
 * Fix lookup regex for faster autocompletion.

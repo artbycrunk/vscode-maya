@@ -123,6 +123,8 @@ export function activate(context: vscode.ExtensionContext) {
 		let cmd:string, nativePath:string, posixPath:string;
 
 		if (type == 'python') {
+			//add encoding http://python.org/dev/peps/pep-0263/
+			text = "# -*- coding: utf-8 -*-\n" + text;
 			nativePath = path.join(os.tmpdir(), "MayaCode.py");
 			posixPath = nativePath.replace(/\\/g, "/");
 			cmd = `python("execfile('${posixPath}')")`;
