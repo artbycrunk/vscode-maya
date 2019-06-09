@@ -1,7 +1,13 @@
 # Maya Extension for Visual Studio Code
 
-[![Visual Studio Marketplace](https://img.shields.io/vscode-marketplace/v/saviof.mayacode.svg?style=flat&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=saviof.mayacode)
-[![Visual Studio Marketplace](https://img.shields.io/vscode-marketplace/r/saviof.mayacode.svg?style=flat&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=saviof.mayacode)
+[![Version](https://vsmarketplacebadge.apphb.com/version/saviof.mayacode.svg)](https://marketplace.visualstudio.com/items?itemName=saviof.mayacode)
+[![Installs](https://vsmarketplacebadge.apphb.com/installs/saviof.mayacode.svg)](https://marketplace.visualstudio.com/items?itemName=saviof.mayacode)
+[![Downloads](https://vsmarketplacebadge.apphb.com/downloads/saviof.mayacode.svg)](https://marketplace.visualstudio.com/items?itemName=saviof.mayacode)
+[![Ratings](https://vsmarketplacebadge.apphb.com/rating/saviof.mayacode.svg)](https://marketplace.visualstudio.com/items?itemName=saviof.mayacode)
+
+[![Average time to resolve an issue](https://isitmaintained.com/badge/resolution/artbycrunk/vscode-maya.svg)](https://isitmaintained.com/project/artbycrunk/vscode-maya "Average time to resolve an issue")
+[![Percentage of issues still open](https://isitmaintained.com/badge/open/artbycrunk/vscode-maya.svg)](https://isitmaintained.com/project/artbycrunk/vscode-maya "Percentage of issues still open")
+
 [![](https://img.shields.io/badge/TWITTER-%40artbycrunk-blue.svg?logo=twitter&style=flat)](https://twitter.com/artbycrunk)
 [![](https://img.shields.io/badge/gitter-join_chat-1dce73.svg?style=flat&logo=gitter-white)](https://gitter.im/vscode-maya/vscode-maya)
 
