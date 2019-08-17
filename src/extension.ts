@@ -79,8 +79,10 @@ export function activate(context: vscode.ExtensionContext) {
 	Logger.registerOutputPanel(outputPanel);
 
 	let words: Array<string> = [];
+	let seen_splits: Array<string> = [];
 	let completions: Array<vscode.CompletionItem> = [];
 	let word_completions: Array<vscode.CompletionItem> = [];
+	let var_completions: Array<vscode.CompletionItem> = [];
 
 	var config = vscode.workspace.getConfiguration('mayacode');
 
@@ -187,38 +189,71 @@ export function activate(context: vscode.ExtensionContext) {
 		];
 	}
 
-	const provider = vscode.languages.registerCompletionItemProvider('mel', {
-		provideCompletionItems(document: vscode.TextDocument, position: vscode.Position, token, context) {
-			if (completions.length == 0) {
-				Logger.info(`Building completions`);
+	function isNumeric(value) {
+		return /^-{0,1}\d+$/.test(value);
+	}
 
-				data['completions'].forEach(this_item => {
-					words.push(this_item['trigger']);
-					let item = new vscode.CompletionItem(this_item['trigger'], vscode.CompletionItemKind.Function);
-					item.detail = this_item['trigger'];
-					item.documentation = this_item['comment'];
-					completions.push(item);
-				});
-			}
+	function process_completions(documentText:string) {
+		var start = new Date().getTime();
 
-			for (let i = 0; i < document.lineCount; ++i) {
-				const line = document.lineAt(i);
-				const text = line.text;
-				const _words = text.split(/[^A-Za-z]+/);
-				_words.forEach(word => {
-					word = word.trim();
-					if (words.indexOf(word) == -1) {
-						words.push(word);
-						word_completions.push(new vscode.CompletionItem(word, vscode.CompletionItemKind.Text));
+		if (completions.length == 0) {
+			Logger.info(`Building command completions`);
+
+			data['completions'].forEach(this_item => {
+				words.push(this_item['trigger']);
+				let item = new vscode.CompletionItem(this_item['trigger'], vscode.CompletionItemKind.Function);
+				item.detail = this_item['trigger'];
+				item.documentation = this_item['comment'];
+				completions.push(item);
+			});
+		}
+
+		const _splitTexts = documentText.split(/[^A-Za-z\$1-9]+/);
+		_splitTexts.forEach(_word => {
+			if (seen_splits.indexOf(_word) == -1) {
+				seen_splits.push(_word);
+				let isVariable = false;
+				_word = _word.trim();
+				if (_word.startsWith('$')) {
+					isVariable = true;
+					_word = _word.replace('$', '');
+				}
+
+				//negate all numbers and aready added items
+				if (!isNumeric(_word) && words.indexOf(_word) == -1) {
+					words.push(_word);
+					if (isVariable) {
+						var_completions.push(new vscode.CompletionItem(_word, vscode.CompletionItemKind.Variable));
+					} else {
+						word_completions.push(new vscode.CompletionItem(_word, vscode.CompletionItemKind.Text));
 					}
-				});
+				}
 			}
+		});
 
+		var end = new Date().getTime();
+		var time = end - start;
+		Logger.info(`Completion execution time: ${time}`);
+	}
+
+	const provider_all = vscode.languages.registerCompletionItemProvider('mel', {
+		provideCompletionItems(document: vscode.TextDocument, position: vscode.Position, token, context) {
+
+			process_completions(document.getText());
 			return [...word_completions, ...completions];
 		}
 	});
 
-	context.subscriptions.push(provider);
+	const provider_vars = vscode.languages.registerCompletionItemProvider('mel', {
+		provideCompletionItems(document: vscode.TextDocument, position: vscode.Position, token, context) {
+
+			process_completions(document.getText());
+			return [...var_completions];
+		}
+	}, '$');
+
+	context.subscriptions.push(provider_all);
+	context.subscriptions.push(provider_vars);
 
 	const command_mel = vscode.commands.registerCommand('mayacode.sendMelToMaya', function() {
 		socket_mel = ensureConnection('mel');
