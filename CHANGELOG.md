@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.1.0
+* Add autocomplete for MEL variables. [issues/9](https://github.com/artbycrunk/vscode-maya/issues/9)
+* Speedup autocomplete processing.
+
 ## Version 1.0.1
 * Fixed issue with non-ascii characters in python code [issues/5](https://github.com/artbycrunk/vscode-maya/issues/5)
 
