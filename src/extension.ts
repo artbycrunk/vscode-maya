@@ -78,6 +78,7 @@ export function activate(context: vscode.ExtensionContext) {
 	let outputPanel = vscode.window.createOutputChannel('Maya');
 	Logger.registerOutputPanel(outputPanel);
 
+	let cmds: Array<string> = [];
 	let words: Array<string> = [];
 	let seen_splits: Array<string> = [];
 	let completions: Array<vscode.CompletionItem> = [];
@@ -237,6 +238,48 @@ export function activate(context: vscode.ExtensionContext) {
 		var time = end - start;
 		Logger.info(`Completion execution time: ${time}`);
 	}
+
+	function getHoverText(url: string, documentation:string): vscode.MarkdownString {
+		const text = `${documentation}\n\n[Read Online Help](${url})`;
+		return new vscode.MarkdownString(text);
+	}
+
+	let hoverProviderMELdisposable = vscode.languages.registerHoverProvider("mel", {
+			provideHover(document: vscode.TextDocument, pos: vscode.Position, token: vscode.CancellationToken): vscode.ProviderResult<vscode.Hover> {
+
+				if (cmds.length == 0) {
+					Logger.info(`Building cmds`);
+
+					data['completions'].forEach(this_item => {
+						cmds.push(this_item['trigger']);
+					});
+				}
+
+				const range = document.getWordRangeAtPosition(pos);
+
+				if (range === undefined) {
+					return;
+				}
+
+				const word = document.getText(range);
+
+				if (cmds.indexOf(word) > -1){
+					const helpUrl = `http://help.autodesk.com/cloudhelp/2017/ENU/Maya-Tech-Docs/Commands/${word}.html`;
+					let documentation = '';
+					data['completions'].forEach(this_item => {
+						if (this_item['trigger'] == word) {
+							documentation = this_item['comment'].replace(/\n/g, "  \n");
+						}
+					});
+					return new vscode.Hover(getHoverText(helpUrl, documentation));
+				}
+
+				return;
+			}
+		}
+	);
+
+	context.subscriptions.push(hoverProviderMELdisposable);
 
 	const provider_all = vscode.languages.registerCompletionItemProvider('mel', {
 		provideCompletionItems(document: vscode.TextDocument, position: vscode.Position, token, context) {
