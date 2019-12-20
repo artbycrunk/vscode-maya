@@ -92,7 +92,7 @@
 		],
 		"configuration": {
 			"type": "object",
-			"title": "Maya port configuration",
+			"title": "MayaCode",
 			"properties": {
 				"mayacode.mel.port": {
 					"type": "integer",
