@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 1.2.0
+* Add Help on hover, with link to read the documentation online.
+* Changed settings title to MayaCode to be in line with api docs
+* Added better error msg when cannot connect to maya via commandPort.
+
 ## Version 1.1.0
 * Add autocomplete for MEL variables. [issues/9](https://github.com/artbycrunk/vscode-maya/issues/9)
 * Speedup autocomplete processing.

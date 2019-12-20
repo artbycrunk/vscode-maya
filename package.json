@@ -2,7 +2,7 @@
 	"name": "mayacode",
 	"displayName": "MayaCode",
 	"description": "A Visual Studio Code extension with support for coding for Maya.",
-	"version": "1.1.0",
+	"version": "1.2.0",
 	"publisher": "saviof",
 	"author": {
 		"name": "Savio Fernandes"
@@ -22,7 +22,9 @@
 	},
 	"keywords": [
 		"maya",
-		"mel"
+		"mel",
+		"python",
+		"autodesk maya"
 	],
 	"categories": [
 		"Programming Languages",
@@ -101,8 +103,8 @@
 				},
 				"mayacode.python.port": {
 					"type": "integer",
-					"default": 7002,
-					"description": "The port over which to send python commands."
+					"default": 5678,
+					"description": "The port over which to debug python files (uses ptvsd module)"
 				},
 				"mayacode.hostname": {
 					"type": "string",

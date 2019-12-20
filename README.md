@@ -20,6 +20,10 @@ A [Visual Studio Code](https://code.visualstudio.com/) [extension](https://marke
 
   > ![Autocomplete MEL commands as you type](./images/autocomplete.gif "Autocomplete MEL commands as you type")
 
+* Autocomplete MEL variables as you type
+
+  > ![Autocomplete MEL variables as you type](./images/variables.gif "Autocomplete MEL variables as you type")
+
 * Send code to Maya via command port (MEL or Python).
 
   > ![Send code to Maya via command port](./images/send_to_maya.gif "Send code to Maya via command port")
