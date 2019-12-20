@@ -103,9 +103,11 @@ export function activate(context: vscode.ExtensionContext) {
 				updateStatusBarItem(type);
 			});
 			socket.on('error', function(error) {
-				let errorMsg = `Unable to connect to port ${port} on Host ${mayahost} in Maya for ${type},\nError Code : ${
-					error.code
-				}`;
+				let errorMsg = `Unable to connect using port ${port} on Host ${mayahost}   \nPlease run the below mel command in Maya\`s script editor 
+
+				commandPort -n "${mayahost}:${port}" -stp "mel" -echoOutput;
+
+				Error Code : ${error.code}`;
 				Logger.error(errorMsg);
 			});
 
