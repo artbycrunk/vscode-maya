@@ -131,6 +131,17 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	}
 
+	function cleanResponse(data: Buffer){
+		var dataString = data.toString()
+		if(dataString.startsWith("Error")){
+			dataString = dataString.replace(/MayaCode.py", line (?<name>\d+)/, (...match) => {
+				let newLineno = match[0].replace(match[1], (+match[1]-1).toString())
+				return newLineno;
+			})
+		}
+		return dataString
+	}
+
 	function ensureConnection(type: string) {
 		let socket;
 		let mayahost: string = config.get('hostname');
@@ -157,8 +168,8 @@ export function activate(context: vscode.ExtensionContext) {
 				sendError(error, error.code, 'socket')
 			});
 
-			socket.on('data', function(data) {
-				Logger.response(data.toString());
+			socket.on('data', function(data: Buffer) {
+				Logger.response(cleanResponse(data));
 			});
 
 			socket.on('end', () => {
