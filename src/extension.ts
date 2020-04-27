@@ -9,10 +9,20 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 var net = require('net');
+import TelemetryReporter from 'vscode-extension-telemetry';
 
 let mayaportStatusBar: vscode.StatusBarItem;
 let socket_mel: Socket;
 let port_mel: string;
+let reporter: TelemetryReporter; // telemetry reporter 
+
+// all events will be prefixed with this event name
+// extension version will be reported as a property with each event 
+const extensionId = 'saviof.mayacode';
+const extensionVersion = vscode.extensions.getExtension(extensionId).packageJSON.version;
+
+// the application insights key (also known as instrumentation key)
+const key = '9f14526e-33c3-420b-a5ff-2bdab837dc10';
 
 function updateStatusBarItem(langID?: string): void {
 	let text: string;
@@ -70,7 +80,7 @@ export class Logger {
 		let util = require('util');
 		let time = TimeUtils.getTime();
 		if (!log || !log.split) return;
-		this._outputPanel.appendLine(util.format('MayaCode [%s][%s]\t %s', time, type, log));
+		this._outputPanel.appendLine(util.format('MayaCode-%s [%s][%s]\t %s', extensionVersion, time, type, log));
 	}
 }
 
@@ -84,8 +94,42 @@ export function activate(context: vscode.ExtensionContext) {
 	let completions: Array<vscode.CompletionItem> = [];
 	let word_completions: Array<vscode.CompletionItem> = [];
 	let var_completions: Array<vscode.CompletionItem> = [];
+	let lastStackTrace: string;
+	const timeOpened = Date.now()
 
 	var config = vscode.workspace.getConfiguration('mayacode');
+
+	// create telemetry reporter on extension activation
+	// ensure it gets property disposed
+	reporter = new TelemetryReporter(extensionId, extensionVersion, key);
+	context.subscriptions.push(reporter);
+	reporter.sendTelemetryEvent('start', {})
+
+	function sendError(error: Error, code: number=0, category='typescript'){
+		if(config.get('telemetry')){
+			if(error.stack == lastStackTrace) return
+			Logger.info(`Sending error event`);
+			reporter.sendTelemetryException(error, {
+                code: code.toString(),
+                category,
+			})
+			lastStackTrace = error.stack
+		}
+	}
+
+	function sendEvent(event: string, execTime: number=0, fileType:string){
+		if(config.get('telemetry')){
+			const measurements: {[key: string]: number} = {}
+			measurements['timeSpent'] = (Date.now() - timeOpened)/1000
+			measurements['execTime'] = execTime
+
+			const properties: {[key: string]: string} = {}
+			properties['fileType'] = fileType
+
+			Logger.info(`Sending event`);
+			reporter.sendTelemetryEvent(event, properties, measurements)
+		}
+	}
 
 	function ensureConnection(type: string) {
 		let socket;
@@ -110,6 +154,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 				Error Code : ${error.code}`;
 				Logger.error(errorMsg);
+				sendError(error, error.code, 'socket')
 			});
 
 			socket.on('data', function(data) {
@@ -126,6 +171,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	function send_tmp_file(text: string, type: string) {
 		let cmd:string, nativePath:string, posixPath:string;
+		var start = new Date().getTime();
 
 		if (type == 'python') {
 			//add encoding http://python.org/dev/peps/pep-0263/
@@ -145,9 +191,13 @@ export function activate(context: vscode.ExtensionContext) {
 		fs.writeFile(nativePath, text, function (err) {
 			if (err) {
 				Logger.error(`Failed to write ${type} to temp file ${posixPath}`);
+				sendError(err, 1, 'filewrite')
 			} else {
 				Logger.info(`Executing ${cmd}...`);
 				send(cmd, type);
+				var end = new Date().getTime();
+				var time = end - start;
+				sendEvent("send_tmp_file", time, type)
 			}
 		});
 	}
@@ -209,6 +259,9 @@ export function activate(context: vscode.ExtensionContext) {
 				item.documentation = this_item['comment'];
 				completions.push(item);
 			});
+			var end = new Date().getTime();
+			var time = end - start;
+			sendEvent("build-completions", time, "mel")
 		}
 
 		const _splitTexts = documentText.split(/[^A-Za-z\$1-9]+/);
@@ -326,4 +379,7 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(...registerDisposables());
 }
 
-export function deactivate(context: vscode.ExtensionContext) {}
+export function deactivate(context: vscode.ExtensionContext) {
+	// This will ensure all pending events get flushed
+	reporter.dispose();
+}
