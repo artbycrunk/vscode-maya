@@ -18,7 +18,7 @@
 	},
 	"icon": "icon.png",
 	"engines": {
-		"vscode": "^1.5.0"
+		"vscode": "^1.31.0"
 	},
 	"keywords": [
 		"maya",
@@ -46,7 +46,8 @@
 	},
 	"devDependencies": {
 		"@types/node": "^6.0.42",
-		"@types/vscode": "^1.40.0",
+		"@types/vscode": "^1.31.0",
+		"ts-loader": "^7.0.1",
 		"tslint": "^5.11.0",
 		"typescript": "^2.1.6",
 		"vscode": "^1.1.17"
