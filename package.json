@@ -18,7 +18,7 @@
 	},
 	"icon": "icon.png",
 	"engines": {
-		"vscode": "^1.0.0"
+		"vscode": "^1.5.0"
 	},
 	"keywords": [
 		"maya",
@@ -45,10 +45,14 @@
 		"postinstall": "node ./node_modules/vscode/bin/install"
 	},
 	"devDependencies": {
-		"@types/node": "^6.0.40",
+		"@types/node": "^6.0.42",
+		"@types/vscode": "^1.40.0",
 		"tslint": "^5.11.0",
-		"typescript": "^2.1.4",
+		"typescript": "^2.1.6",
 		"vscode": "^1.1.17"
+	},
+	"dependencies": {
+		"vscode-extension-telemetry": "^0.1.3"
 	},
 	"contributes": {
 		"languages": [
@@ -110,6 +114,10 @@
 					"type": "string",
 					"default": "localhost",
 					"description": "The hostname of the machine which has a maya instance running."
+				},
+				"mayacode.telemetry": {
+					"type": "boolean",
+					"default": true
 				}
 			}
 		},
