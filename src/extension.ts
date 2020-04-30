@@ -84,6 +84,106 @@ export class Logger {
 	}
 }
 
+class MelDocumentSymbolProvider implements vscode.DocumentSymbolProvider {
+
+	private getProcRange(ln_start: number, ln_end: number): vscode.Range {
+        let pos1 = new vscode.Position(ln_start, 0);
+        let pos2 = new vscode.Position(ln_end, 0);
+        return new vscode.Range(pos1, pos2);
+	}
+	
+	private getRange(name:string, text:string, ln_num: number): vscode.Range {
+		let pos = text.indexOf(name)
+        let pos1 = new vscode.Position(ln_num, pos);
+        let pos2 = new vscode.Position(ln_num, pos+name.length);
+        return new vscode.Range(pos1, pos2);
+    }
+
+	public provideDocumentSymbols(
+		document: vscode.TextDocument, 
+		token: vscode.CancellationToken): Promise<vscode.DocumentSymbol[]>
+		{
+        return new Promise((resolve, reject) => 
+        { 
+			let symbols: vscode.DocumentSymbol[] = [];
+			let nodes = [symbols]
+			let inside_proc = false
+			let nested_levels = 0
+
+			let symbolkind_proc = vscode.SymbolKind.Function
+			let symbolkind_var = vscode.SymbolKind.Variable
+			
+			let procTypes = ["string", "string[]"]
+
+			let proc_symbol;
+			let proc_start_line:number;
+			
+			for (var i = 0; i < document.lineCount; i++) {
+				var line = document.lineAt(i);
+				let tokens = line.text.split(" ")
+
+				for (var x = 0; x < tokens.length; x++) {
+
+					let cur_token = tokens[x].trim()
+
+					if (cur_token == '{' || cur_token.includes("{"))
+					{//open 
+						nested_levels += 1}
+
+					// found a proc
+					if (cur_token == "proc"){
+						let proc_name = tokens[x+1]
+						if(procTypes.includes(proc_name)){
+							proc_name = tokens[x+2]
+						}
+
+						let clean_proc_name = proc_name.split("(")[0]
+						let proc_range = this.getRange(clean_proc_name, line.text, i);
+						proc_start_line = i
+
+						proc_symbol = new vscode.DocumentSymbol(
+							clean_proc_name,
+							'',
+							symbolkind_proc,
+							line.range, proc_range)
+	
+						nodes[nodes.length-1].push(proc_symbol)
+						if (!inside_proc) {
+							nodes.push(proc_symbol.children)
+							inside_proc = true
+						}
+					}
+					if (cur_token == "}" || cur_token.includes("}")){
+						//closed
+						nested_levels -= 1
+						if (inside_proc && nested_levels == 0) {
+							proc_symbol.range = this.getProcRange(proc_start_line, i)
+							nodes.pop()
+							inside_proc = false
+						}
+					}
+
+					// found a variable
+					if (cur_token.startsWith("$")){
+						if(tokens[x+1] == "=" || cur_token.includes("=")){
+							let clean_var_name = cur_token.split("=")[0]
+							let var_range = this.getRange(clean_var_name, line.text, i);
+							let var_symbol = new vscode.DocumentSymbol(
+								clean_var_name,
+								'',
+								symbolkind_var,
+								var_range, var_range)
+		
+							nodes[nodes.length-1].push(var_symbol)
+						}
+					}
+				}
+			}
+			resolve(symbols);
+		});
+	}
+}
+
 export function activate(context: vscode.ExtensionContext) {
 	let outputPanel = vscode.window.createOutputChannel('Maya');
 	Logger.registerOutputPanel(outputPanel);
@@ -361,6 +461,12 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	}, '$');
 
+	const provider_symbols = vscode.languages.registerDocumentSymbolProvider(
+		{scheme: "file", language: "mel"}, 
+		new MelDocumentSymbolProvider()
+	)
+
+	context.subscriptions.push(provider_symbols);
 	context.subscriptions.push(provider_all);
 	context.subscriptions.push(provider_vars);
 
