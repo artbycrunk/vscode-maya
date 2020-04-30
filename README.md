@@ -16,6 +16,10 @@ A [Visual Studio Code](https://code.visualstudio.com/) [extension](https://marke
 
 ## Features
 
+* Syntax Highlight MEL scripts.
+* Hierarchical document tree in the [outline view](https://code.visualstudio.com/docs/getstarted/userinterface#_outline-view).
+* [Breadcrumbs](https://code.visualstudio.com/updates/v1_26#_breadcrumbs) support.
+
 * Autocomplete MEL commands as you type ( along with flag info )
 
   > ![Autocomplete MEL commands as you type](./images/autocomplete.gif "Autocomplete MEL commands as you type")
@@ -28,10 +32,10 @@ A [Visual Studio Code](https://code.visualstudio.com/) [extension](https://marke
 
   > ![Send code to Maya via command port](./images/send_to_maya.gif "Send code to Maya via command port")
 
-* Syntax Highlight MEL scripts.
 * Support auto closing brackets, quotes and ticks
 
   > ![Syntax Highlight MEL scripts](./images/syntax_highlight.gif "Syntax Highlight MEL scripts.")
+
 
 ## Useful commands
 
