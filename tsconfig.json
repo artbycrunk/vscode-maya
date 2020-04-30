@@ -5,7 +5,10 @@
 		"outDir": "out",
 		"lib": ["es6"],
 		"sourceMap": true,
-		"rootDir": "src"
+		"strict": false,
+		"rootDir": "src",
+		"forceConsistentCasingInFileNames": true,
+        "experimentalDecorators": true
 	},
 	"exclude": ["node_modules", ".vscode-test"]
 }

@@ -1,6 +1,23 @@
 {
-	"rules": {
-		"indent": [true, "tabs"],
-		"semicolon": [true, "always"]
-	}
+    "defaultSeverity": "warning",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "jsRules": {},
+    "rules": {
+        "semicolon":false,
+        "no-trailing-whitespace":false,
+        "curly":false,
+        "no-console":false,
+        "one-line":false,
+        "member-access": false,
+        "triple-equals":false,
+        "arrow-parens": false,
+        "no-consecutive-blank-lines": false,
+        "only-arrow-functions": false,
+        "whitespace":false,
+        "prefer-const":false,
+        "quotemark":false
+    },
+    "rulesDirectory": []
 }
