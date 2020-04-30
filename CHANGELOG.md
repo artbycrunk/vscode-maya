@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.4.0 (May 01, 2020)
+* Enhancement: ctrl+shift+o go to symbol support. (@artbycrunk in [issues/11](https://github.com/artbycrunk/vscode-maya/issues/11))
+* Enhancement: Outline support for functions and variables (@artbycrunk in [issues/11](https://github.com/artbycrunk/vscode-maya/issues/12))
+
 ## Version 1.3.0 (April 27, 2020)
 * Fix: Output line numbers are off by 1 (@artbycrunk in [issues/14](https://github.com/artbycrunk/vscode-maya/issues/14))
 * Enhancement: Added telemetry for basic events
