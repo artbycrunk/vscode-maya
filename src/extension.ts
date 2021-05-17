@@ -289,7 +289,7 @@ export function activate(context: vscode.ExtensionContext) {
 			text = "# -*- coding: utf-8 -*-\n" + text;
 			nativePath = path.join(os.tmpdir(), "MayaCode.py");
 			posixPath = nativePath.replace(/\\/g, "/");
-			cmd = `python("execfile('${posixPath}')")`;
+			cmd = `python("exec(open('${posixPath}').read())")`;
 		}
 
 		if (type == 'mel') {
