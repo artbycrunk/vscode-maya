@@ -289,7 +289,11 @@ export function activate(context: vscode.ExtensionContext) {
 			text = "# -*- coding: utf-8 -*-\n" + text;
 			nativePath = path.join(os.tmpdir(), "MayaCode.py");
 			posixPath = nativePath.replace(/\\/g, "/");
-			cmd = `python("execfile('${posixPath}')")`;
+			if(config.get('runner.latest')){
+				cmd = `python("exec(open('${posixPath}').read())")`;
+			}else{
+				cmd = `python("execfile('${posixPath}')")`;
+			}
 		}
 
 		if (type == 'mel') {
@@ -315,6 +319,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	function send(text: string, type: string) {
 		let success: boolean = socket_mel.write(text + '\n');
+		// let success: boolean = socket_mel.write(text + '\n', "utf8");
 		Logger.info(text);
 		if (success){
 			let successMsg = `Sent ${type} code to Maya...`;
