@@ -2,7 +2,7 @@
 	"name": "mayacode",
 	"displayName": "MayaCode",
 	"description": "A Visual Studio Code extension with support for coding for Maya.",
-	"version": "1.4.0",
+	"version": "1.5.0",
 	"publisher": "saviof",
 	"author": {
 		"name": "Savio Fernandes"
@@ -51,7 +51,7 @@
 		"vscode-test": "^1.3.0"
 	},
 	"dependencies": {
-		"vscode-extension-telemetry": "^0.1.3"
+		"vscode-extension-telemetry": "^0.1.7"
 	},
 	"contributes": {
 		"languages": [
@@ -113,6 +113,11 @@
 					"type": "string",
 					"default": "localhost",
 					"description": "The hostname of the machine which has a maya instance running."
+				},
+				"mayacode.runner.latest": {
+					"type": "boolean",
+					"default": true,
+					"description": "Run for Maya 2022 and above"
 				},
 				"mayacode.telemetry": {
 					"type": "boolean",

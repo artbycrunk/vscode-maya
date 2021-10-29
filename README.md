@@ -49,6 +49,9 @@ Command | Description
 You can also select a block of code in the editor 
 and ```Right-click -> Send Code to Maya```, this is based on the current working language (Mel or Python).
 
+## Update for Maya 2022 and above.
+
+  > ![Option for Maya 2022 and above](./images/runner_option.png "Option for Maya 2022 and above")
 
 ## Opening the correct ports for Send to Maya Commands.
 

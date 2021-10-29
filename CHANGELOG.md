@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 1.5.0 (October 30, 2021)
+* Enhancement: Add support for Maya 2022 with Python 3.7. (@artbycrunk in [issues/25](https://github.com/artbycrunk/vscode-maya/issues/25))
+
 ## Version 1.4.0 (May 01, 2020)
 * Enhancement: ctrl+shift+o go to symbol support. (@artbycrunk in [issues/11](https://github.com/artbycrunk/vscode-maya/issues/11))
 * Enhancement: Outline support for functions and variables (@artbycrunk in [issues/11](https://github.com/artbycrunk/vscode-maya/issues/12))
